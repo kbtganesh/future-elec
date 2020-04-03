@@ -1,11 +1,12 @@
 import Link from 'next/link'
+import fetch from 'node-fetch'
 
-function About({ posts }) {
+function About({ products }) {
     return (
         <ul>
-            {posts.map(post => (
-                <li key={post.id}>
-                    <Link href='products/[productId]' as={`products/${post.id}`}>{post.name}</Link>
+            {products.map(product => (
+                <li key={product.id}>
+                    <Link href='products/[productId]' as={`products/${product.id}`}>{product.name}</Link>
                 </li>
             ))}
         </ul>
@@ -15,18 +16,14 @@ function About({ posts }) {
 // This function gets called at build time
 export async function getStaticProps() {
     // Call an external API endpoint to get posts
-    // const res = await fetch('https://.../posts')
-    // const posts = await res.json()
+    const res = await fetch('https://us-central1-eeradi.cloudfunctions.net/api/products')
+    const products = await res.json()
 
     // By returning { props: posts }, the Blog component
     // will receive `posts` as a prop at build time
     return {
         props: {
-            posts: [
-                { id: 1, name: 'one' },
-                { id: 2, name: 'two' },
-                { id: 3, name: 'three' },
-            ],
+            products
         },
     }
 }
