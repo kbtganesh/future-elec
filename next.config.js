@@ -8,7 +8,7 @@ const Dotenv = require("dotenv-webpack");
 module.exports = withPlugins([[withSass], [withImages]], {
   webpack(config, options) {
     config.resolve.modules.push(path.resolve("./"));
-    config.plugins.push(new Dotenv({ silent: true }));
+    config.plugins.push(new Dotenv({ silent: true, systemvars: true }));
     return config;
   }
 });
