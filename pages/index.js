@@ -14,7 +14,7 @@ const Home = () => (
       <h1 className="title">
         Go to <a href="/landing">Landing!</a>
       </h1>
-      <div>Environments</div>
+      <div>Environments plz work agidu</div>
       <div>process.env.TEST - {process.env.TEST}</div>
       <div>process.env.REACT_APP_TEST - {process.env.REACT_APP_TEST}</div>
       <p className="description">
