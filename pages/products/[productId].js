@@ -12,20 +12,20 @@ function Product({ product }) {
     )
 }
 
-// export async function getStaticPaths() {
-//     // Call an external API endpoint to get posts
-//     const res = await fetch(`https://us-central1-eeradi.cloudfunctions.net/api/products`);
-//     const products = await res.json()
-//     // Get the paths we want to pre-render based on posts
-//     const paths = products.map(product => `/products/${product.id}`)
+export async function getStaticPaths() {
+    // Call an external API endpoint to get posts
+    const res = await fetch(`https://us-central1-eeradi.cloudfunctions.net/api/products`);
+    const products = await res.json()
+    // Get the paths we want to pre-render based on posts
+    const paths = products.map(product => `/products/${product.id}`)
 
-//     // We'll pre-render only these paths at build time.
-//     // { fallback: false } means other routes should 404.
-//     return { paths, fallback: false }
-// }
+    // We'll pre-render only these paths at build time.
+    // { fallback: false } means other routes should 404.
+    return { paths, fallback: false }
+}
 
 // This function gets called at build time
-export async function getServerSideProps({ params }) {
+export async function getStaticProps({ params }) {
     console.log("kbt: getStaticProps -> params", params);
     // Call an external API endpoint to get posts
     const res = await fetch(`https://us-central1-eeradi.cloudfunctions.net/api/products/${params.productId}`)

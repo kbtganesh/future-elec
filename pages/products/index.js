@@ -1,9 +1,33 @@
 import Link from 'next/link'
 import fetch from 'node-fetch'
+import React, { useState, useEffect } from 'react';
 
 function About({ products }) {
+    const [count, setCount] = useState(0);
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        // Update the document title using the browser API
+        document.title = `You clicked ${count} timess`;
+    });
+    async function fetchData() {
+        const res = await fetch('https://us-central1-eeradi.cloudfunctions.net/api/products')
+        setData(await res.json());
+    }
+
     return (
         <ul>
+            <li>
+                <button onClick={() => setCount(count + 1)}> Click me </button>
+            </li>
+            <li>
+                <button onClick={fetchData}> Data </button>
+                {data.map((d, i) => (
+                    <div key={i}>
+                        {d.id} - {d.name}
+                    </div>
+                ))}
+            </li>
             {products.map(product => (
                 <li key={product.id}>
                     <Link href='products/[productId]' as={`products/${product.id}`}>{product.name}</Link>
