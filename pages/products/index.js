@@ -9,6 +9,7 @@ function About({ products }) {
     useEffect(() => {
         // Update the document title using the browser API
         document.title = `You clicked ${count} timess`;
+        console.log("kbt: About -> process.env", process.env.TEST);
     });
     async function fetchData() {
         const res = await fetch('https://us-central1-eeradi.cloudfunctions.net/api/products')

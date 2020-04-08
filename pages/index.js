@@ -16,7 +16,7 @@ const Home = () => (
       </h1>
       <div>Environments</div>
       <div>process.env.TEST - {process.env.TEST}</div>
-      <div>process.env.customKey - {process.env.customKey}</div>
+      <div>process.env.REACT_APP_TEST - {process.env.REACT_APP_TEST}</div>
       <p className="description">
         Get started by editing <code>pages/index.js</code>
       </p>
