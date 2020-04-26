@@ -1,0 +1,54 @@
+{
+    "kbt-4557823": {
+        "id": "kbt-4557823",
+        "title": "Sherrie Chandler",
+        "description": "Minim labore magna culpa id ad proident ut cupidatat excepteur non labore ut aute. Adipisicing nisi commodo minim aliqua. Duis in sunt id labore proident amet aute aliqua do sint laborum. Officia commodo officia nulla irure velit qui dolore in labore sunt ea dolore commodo enim. Occaecat laboris Lorem ipsum tempor eu adipisicing id.",
+        "brand": "Dogspa",
+        "price": 5278,
+        "shippingPrice": 25,
+        "strikePrice": 0,
+        "inStock": true,
+        "codAvailable": true,
+        "returnAvailable": true,
+        "category": "jewellery"
+    },
+    "kbt-4557824": {
+        "id": "kbt-4557824",
+        "title": "Barton Koch",
+        "description": "Occaecat ut est do laboris exercitation culpa do. Pariatur sint qui culpa exercitation exercitation laboris elit velit. Fugiat incididunt aliquip sit ad deserunt. Eu do proident qui nulla commodo est laboris magna dolor eu et enim sint amet. Aliqua do et mollit ipsum eu commodo pariatur. Ea do culpa esse deserunt eiusmod ipsum.",
+        "brand": "Gynko",
+        "price": 6079,
+        "shippingPrice": 85,
+        "strikePrice": 0,
+        "inStock": true,
+        "codAvailable": true,
+        "returnAvailable": false,
+        "category": "jewellery"
+    },
+    "kbt-4557825": {
+        "id": "kbt-4557825",
+        "title": "Therese Hayden",
+        "description": "Sint et fugiat Lorem nisi nisi ullamco incididunt consectetur. Commodo et quis ut occaecat ex culpa culpa aliqua mollit labore dolor pariatur qui et. Ad mollit id nisi do ea elit laborum non voluptate.",
+        "brand": "Applica",
+        "price": 1898,
+        "shippingPrice": 39,
+        "strikePrice": 0,
+        "inStock": true,
+        "codAvailable": false,
+        "returnAvailable": true,
+        "category": "jewellery"
+    },
+    "kbt-4557826": {
+        "id": "kbt-4557826",
+        "title": "Leta Hahn",
+        "description": "Sint pariatur pariatur ad veniam in officia id sint enim pariatur. Voluptate aliquip culpa sint ea duis commodo consectetur nisi veniam voluptate mollit nisi. Eu consectetur laboris mollit voluptate aute nulla cillum est. Consectetur aliquip veniam ullamco dolore aute quis quis enim proident laborum amet commodo. Nisi pariatur sint culpa commodo eiusmod officia cillum cillum duis sit voluptate excepteur ad.",
+        "brand": "Neurocell",
+        "price": 4093,
+        "shippingPrice": 12,
+        "strikePrice": 0,
+        "inStock": true,
+        "codAvailable": true,
+        "returnAvailable": false,
+        "category": "jewellery"
+    }
+}

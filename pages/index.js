@@ -1,7 +1,20 @@
 import Head from 'next/head'
+import Header from "components/Header/Header.js";
+import HeaderLinks from "components/Header/HeaderLinks.js";
 
 const Home = () => (
   <div className="container">
+    {/* <Header
+      color="white"
+      // routes={dashboardRoutes}
+      brand="NextJS Material Kit"
+      rightLinks={<HeaderLinks />}
+      fixed
+      // changeColorOnScroll={{
+      //   height: 400,
+      //   color: "white"
+      // }}
+    /> */}
     <Head>
       <title>Create Next App</title>
       <link rel="icon" href="/favicon.ico" />
@@ -9,7 +22,7 @@ const Home = () => (
 
     <main>
       <h1 className="title">
-        Go to <a href="/products">Products!</a>
+        Go to <a href="/products/category">Products!</a>
       </h1>
       <h1 className="title">
         Go to <a href="/landing">Landing!</a>

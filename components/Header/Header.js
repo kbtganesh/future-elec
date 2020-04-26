@@ -102,7 +102,7 @@ export default function Header(props) {
           }}
           onClose={handleDrawerToggle}
         >
-          <div className={classes.appResponsive}>
+          <div className={classes.appResponsive} style={{color: 'white !important'}}>
             {leftLinks}
             {rightLinks}
           </div>

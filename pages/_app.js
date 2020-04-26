@@ -25,6 +25,10 @@ import PageChange from "components/PageChange/PageChange.js";
 
 import "assets/scss/nextjs-material-kit.scss?v=0.1.0";
 
+import ProductContextProvider, { ProductContext } from "../product-context";
+import Header from "components/Header/Header.js";
+import HeaderLinks from "components/Header/HeaderLinks.js";
+
 Router.events.on("routeChangeStart", url => {
   console.log(`Loading: ${url}`);
   document.body.classList.add("body-page-transition");
@@ -78,9 +82,22 @@ export default class MyApp extends App {
     return (
       <React.Fragment>
         <Head>
-          <title>NextJS Material Kit by Creative Tim</title>
+          <title>Happy Shopping</title>
         </Head>
-        <Component {...pageProps} />
+        <ProductContextProvider>
+          <ProductContext.Consumer>
+            {({ title }) => (<Header
+              color="primary"
+              // routes={dashboardRoutes}
+              brand={title || "Happy Shopping"}
+              rightLinks={<HeaderLinks />}
+              fixed
+            />)}
+          </ProductContext.Consumer>
+          <div className="kbt">
+            <Component {...pageProps} />
+          </div>
+        </ProductContextProvider>
       </React.Fragment>
     );
   }

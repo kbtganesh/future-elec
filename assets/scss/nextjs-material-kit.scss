@@ -28,3 +28,14 @@
 @import "plugins/plugin-nouislider";
 @import "plugins/plugin-react-datetime";
 @import "plugins/plugin-react-slick";
+
+.page-container {
+    padding-top: 70px;
+    height: 100%;
+    min-height: 100vh;
+    background: white;
+}
+
+.MuiDrawer-paper a{
+    color: black !important;
+}

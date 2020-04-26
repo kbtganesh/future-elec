@@ -31,7 +31,7 @@ export default function LandingPage(props) {
   const { ...rest } = props;
   return (
     <div>
-      <Header
+      {/* <Header
         color="transparent"
         routes={dashboardRoutes}
         brand="NextJS Material Kit"
@@ -42,7 +42,7 @@ export default function LandingPage(props) {
           color: "white"
         }}
         {...rest}
-      />
+      /> */}
     <Parallax filter responsive image={require("assets/img/landing-bg.jpg")}>
         <div className={classes.container}>
           <GridContainer>
