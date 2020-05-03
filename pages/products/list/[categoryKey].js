@@ -5,9 +5,7 @@ import { ProductContext } from "../../../product-context";
 import "./list.scss";
 import Snackbar from '@material-ui/core/Snackbar';
 
-function List({ response, router, params }) {
-    console.log("kbt: fromIndex List -> params", params);
-    console.log("kbt:fromIndex List -> router", router);
+function List({ response }) {
     let { success, data, errorMessage } = response || {};
 
     console.log("kbt:fromIndex List -> response", response);
@@ -29,8 +27,16 @@ function List({ response, router, params }) {
     // }
 
     function selectProduct(product) {
+        console.log("kbt: selectProduct -> sproduct", JSON.stringify(product));
         setProduct(product);
-        Router.push(`/products/details/[productId]?product=${JSON.stringify(product)}`, `/products/details/${product.id}?product=${JSON.stringify(product)}`);
+        let productObject = JSON.parse(JSON.stringify(product));
+        let {imgUrl, ...productObjectCopy} = productObject;
+        let encodedProduct = encodeURIComponent(JSON.stringify(productObjectCopy));
+        console.log("kbt: selectProduct -> imgUrl", imgUrl);
+        let encodedImgUrl = encodeURIComponent(imgUrl);
+        console.log("kbt: selectProduct -> encodedImgUrl", encodedImgUrl);
+        let queryParam = `product=${encodedProduct}${imgUrl ? `&imgUrl=${encodedImgUrl}` : ''}`
+        Router.push(`/products/details/[productId]?${queryParam}`, `/products/details/${product.id}?${queryParam}`);
     }
 
     function selectChildCategory(childKey) {
@@ -47,7 +53,7 @@ function List({ response, router, params }) {
             {data && <div className="product-card-container">
                 {data.map(d => (
                     <div className={"product-card"} onClick={() => selectProduct(d)}>
-                        <img src={require('./no-image.png')} />
+                        <img src={d.imgUrl || require('./no-image.png')} />
                         <div className="info">
                             <div className="title">{d.title}</div>
                             <div className="brand">{d.brand}</div>
@@ -87,7 +93,7 @@ export async function getServerSideProps({ params }) {
     // will receive `posts` as a prop at build time
     return {
         props: {
-            response, params: JSON.stringify(params)
+            response
         },
     }
 }
