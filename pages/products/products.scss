@@ -1,8 +1,10 @@
+@import "../main.scss";
 .category-container {
     .product-container {
         padding-top: 70px;
         height: 100vh;
         background: #f7fcff;
+
     }
 
     .parent-category,
@@ -27,7 +29,7 @@
             cursor: pointer;
         }
         .item.selected {
-            background: #339dff;
+            background: $primaryColor;
             font-weight: bold;
             color: white;
         }

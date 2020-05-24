@@ -10,9 +10,12 @@ import Button from "components/CustomButtons/Button.js";
 import classNames from "classnames";
 import "./details.scss";
 
-function Product({ product: produtParam, query }) {
+function Product({ product: productRes, query }) {
     const { setTitle } = useContext(ProductContext);
-    let product = produtParam || {};
+    let productResData = productRes.data || {};
+    let productInitialState = productRes.success ? { ...productRes.data } : {};
+    const [product, setProduct] = useState(productInitialState);
+    let subProducts = productRes.data.subProducts ? { ...productRes.data.subProducts } : null;
     console.log("kbt: Product -> product.imgUrl", product.imgUrl);
     let imagePlaceholderUrl = 'https://www.ajactraining.org/wp-content/uploads/2019/09/image-placeholder-600x600.jpg';
     useEffect(() => {
@@ -21,6 +24,42 @@ function Product({ product: produtParam, query }) {
         console.log("kbt:fromIndex About -> process.env", process.env.TEST);
         setTitle(product && product.id);
     });
+    function changeDisplayProduct(isSubProduct, id) {
+        console.log("kbt: changeDisplayProduct -> isSubProduct, id", isSubProduct, id);
+        let product;
+        if (!isSubProduct) {
+            product = { ...productRes.data }
+        } else {
+            product = { ...subProducts[id] }
+        }
+        setProduct(product)
+    }
+
+    function renderSubProduct() {
+        let idArr = [];
+        if (productRes?.data?.subProducts) {
+            idArr = [productRes.data.id, Object.keys(productRes.data.subProducts)]
+        }
+        return idArr.map((id, i) => {
+            let currentProject = i == 0 ? productResData : subProducts[id];
+            return (
+                <div className={`sub-product-item ${product.id == currentProject.id ? 'selected' : ''}`}
+                    onClick={()=>changeDisplayProduct(i != 0, currentProject.id)}>
+                    <div className="image">
+                        <img src={currentProject.imgUrl} alt={currentProject.id} />
+                    </div>
+                    <div className="text">
+                        <div className="title">
+                            {currentProject.title}
+                        </div>
+                        <div className="price">
+                            ₹ {currentProject.price}
+                        </div>
+                    </div>
+                </div>
+            )
+        })
+    }
     return (
         <div className="page-container details-page">
             <div className="product-container">
@@ -55,6 +94,14 @@ function Product({ product: produtParam, query }) {
                     </div>
                 </div>
             </div>
+            {subProducts && <div className="sub-product-container">
+                <div className="heading">
+                    Other Varients
+                </div>
+                <div className="list">
+                    {renderSubProduct()}
+                </div>
+            </div>}
             {/* <h2>Product Information</h2>
             <ul>
                 <li key={product.name}>{product.title}</li>
@@ -68,23 +115,22 @@ function Product({ product: produtParam, query }) {
 // // This function gets called at build time
 export async function getServerSideProps(arg) {
     const { params, query, req } = arg;
-    let product;
-    if (query.product) {
-        console.log('OTHA'.repeat('10'));
-        console.log("kbt: getServerSideProps -> query.product", query.product.length);
-        console.log('OTHA'.repeat('10'));
-        product = JSON.parse(decodeURIComponent(query.product));
-        console.log("kbt: getServerSideProps -> product", product);
-        console.log("kbt: getServerSideProps -> query.imgUrl", query.imgUrl);
-        console.log("kbt: getServerSideProps -> query.imgUrl", query.imgUrl);
-        console.log("kbt: getServerSideProps -> decodeURIComponent(query.imgUrl)", decodeURIComponent(query.imgUrl));
-        if (query.imgUrl) product['imgUrl'] = query.imgUrl;
-    } else {
-        product = null;
-    }
+    // if (query.product) {
+    //     console.log('OTHA'.repeat('10'));
+    //     console.log("kbt: getServerSideProps -> query.product", query.product.length);
+    //     console.log('OTHA'.repeat('10'));
+    //     product = JSON.parse(decodeURIComponent(query.product));
+    //     console.log("kbt: getServerSideProps -> product", product);
+    //     console.log("kbt: getServerSideProps -> query.imgUrl", query.imgUrl);
+    //     console.log("kbt: getServerSideProps -> query.imgUrl", query.imgUrl);
+    //     console.log("kbt: getServerSideProps -> decodeURIComponent(query.imgUrl)", decodeURIComponent(query.imgUrl));
+    //     if (query.imgUrl) product['imgUrl'] = query.imgUrl;
+    // } else {
+    //     product = null;
+    // }
     // Call an external API endpoint to get posts
-    // const res = await fetch(`https://us-central1-eeradi.cloudfunctions.net/api/products/${params.productId}`)
-    // const product = await res.json()
+    const res = await fetch(`https://us-central1-eeradi.cloudfunctions.net/api/products/detail/${params.productId}`)
+    const product = await res.json()
 
     // By returning { props: posts }, the Blog component
     // will receive `posts` as a prop at build time

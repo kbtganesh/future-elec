@@ -36,7 +36,8 @@ function List({ response }) {
         let encodedImgUrl = encodeURIComponent(imgUrl);
         console.log("kbt: selectProduct -> encodedImgUrl", encodedImgUrl);
         let queryParam = `product=${encodedProduct}${imgUrl ? `&imgUrl=${encodedImgUrl}` : ''}`
-        Router.push(`/products/details/[productId]?${queryParam}`, `/products/details/${product.id}?${queryParam}`);
+        // Router.push(`/products/details/[productId]?${queryParam}`, `/products/details/${product.id}?${queryParam}`);
+        Router.push(`/products/details/[productId]`, `/products/details/${product.id}`);
     }
 
     function selectChildCategory(childKey) {
