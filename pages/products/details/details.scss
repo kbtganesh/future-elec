@@ -1,3 +1,5 @@
+@import "../../main.scss";
+
 .details-page {
     .product-container {
         display: flex;
@@ -62,31 +64,33 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 32px;
             img {
-                padding: 16px;
+                padding: unset;
+                height: unset;
+                max-height: 300px;
             }
             .product-details {
                 padding: 16px;
+                width: 100%;
             }
         }
     }
     .sub-product-container {
         .heading {
+            font-size: 24px;
+            padding: 20px 20px 0;
+            font-weight: bold;
         }
         .list {
             display: flex;
             .sub-product-item {
-                display: flex;
-                flex-direction: column;
                 background: white;
                 border-radius: 10px;
                 width: 240px;
                 margin: 30px;
-                padding: 0 20px;
+                border: 1px solid;
                 cursor: pointer;
                 .image {
-                    flex: 4;
                     img {
                         width: 100%;
                         height: 240px;
@@ -94,8 +98,10 @@
                     }
                 }
                 .text {
-                    flex: 1;
-                    margin-top: 16px;
+                    background: #222222;
+                    border-radius: 0 0 10px 10px;
+                    padding: 20px;
+                    color: white;
                     .title {
                         font-size: 18px;
                         font-weight: 400;
@@ -106,7 +112,35 @@
                 }
             }
             .sub-product-item.selected {
-                border: 1px solid gray;
+                background: #f2f2f2;
+                border: 1px solid $primaryColor;
+                .text {
+                    background: $primaryColor;
+                }
+            }
+        }
+        @media only screen and (max-width: 900px) {
+            .list {
+                .sub-product-item {
+                    width: 150px;
+                    margin: 20px;
+                    height: min-content;
+                    .image {
+                        img {
+                            height: 150px;
+                        }
+                        // flex: 1;
+                    }
+                    .text {
+                        padding: 10px;
+                        .title {
+                            font-size: 14px;
+                        }
+                        .price {
+                            font-size: 14px;
+                        }
+                    }
+                }
             }
         }
     }

@@ -32,6 +32,7 @@ function Product({ product: productRes, query }) {
         } else {
             product = { ...subProducts[id] }
         }
+        window.scrollTo(0,0)
         setProduct(product)
     }
 
