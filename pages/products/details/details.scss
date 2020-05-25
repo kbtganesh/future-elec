@@ -72,6 +72,12 @@
             .product-details {
                 padding: 16px;
                 width: 100%;
+                .buy-action {
+                    text-align: center;
+                    button {
+                        width: 49%;
+                    }
+                }
             }
         }
     }
