@@ -29,13 +29,13 @@ function List({ response }) {
     function selectProduct(product) {
         console.log("kbt: selectProduct -> sproduct", JSON.stringify(product));
         setProduct(product);
-        let productObject = JSON.parse(JSON.stringify(product));
-        let {imgUrl, ...productObjectCopy} = productObject;
-        let encodedProduct = encodeURIComponent(JSON.stringify(productObjectCopy));
-        console.log("kbt: selectProduct -> imgUrl", imgUrl);
-        let encodedImgUrl = encodeURIComponent(imgUrl);
-        console.log("kbt: selectProduct -> encodedImgUrl", encodedImgUrl);
-        let queryParam = `product=${encodedProduct}${imgUrl ? `&imgUrl=${encodedImgUrl}` : ''}`
+        // let productObject = JSON.parse(JSON.stringify(product));
+        // let {imgUrl, ...productObjectCopy} = productObject;
+        // let encodedProduct = encodeURIComponent(JSON.stringify(productObjectCopy));
+        // console.log("kbt: selectProduct -> imgUrl", imgUrl);
+        // let encodedImgUrl = encodeURIComponent(imgUrl);
+        // console.log("kbt: selectProduct -> encodedImgUrl", encodedImgUrl);
+        // let queryParam = `product=${encodedProduct}${imgUrl ? `&imgUrl=${encodedImgUrl}` : ''}`
         // Router.push(`/products/details/[productId]?${queryParam}`, `/products/details/${product.id}?${queryParam}`);
         Router.push(`/products/details/[productId]`, `/products/details/${product.id}`);
     }
@@ -54,7 +54,7 @@ function List({ response }) {
             {data && <div className="product-card-container">
                 {data.map(d => (
                     <div className={"product-card"} onClick={() => selectProduct(d)}>
-                        <img src={d.imgUrl || require('./no-image.png')} />
+                        <img src={(d.imgUrlList && d.imgUrlList[0]) || require('./no-image.png')} />
                         <div className="info">
                             <div className="title">{d.title}</div>
                             <div className="brand">{d.brand}</div>

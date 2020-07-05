@@ -1,15 +1,29 @@
 @import "../../main.scss";
 
 .details-page {
+    max-width: 1200px;
+    margin: auto;
     .product-container {
         display: flex;
 
-        img {
-            max-width: 500px;
+        .img-carousel {
+            max-width: 400px;
             width: 100%;
-            padding: 48px;
-            height: 400px;
-            object-fit: contain;
+            img {
+                max-width: 400px;
+                width: 100%;
+                height: 400px;
+                padding: 0 32px;
+                object-fit: contain;
+            }
+            .carousel-indicators {
+                @media only screen and (max-width: 900px) {
+                    bottom: -40px;
+                }
+                li {
+                    background-color: black;
+                }
+            }
         }
         .product-details {
             display: grid;
@@ -35,6 +49,21 @@
                 .strike-price {
                     color: #989898;
                     text-decoration: overline;
+                }
+            }
+            .buy-action {
+                display: flex;
+                flex-wrap: wrap;
+                text-align: center;
+                a {
+                    flex: 1;
+                    max-width: 250px;
+                    &:first-child {
+                        margin-right: 20px;
+                    }
+                }
+                button {
+                    width: 100%;
                 }
             }
             .icons {
@@ -72,12 +101,7 @@
             .product-details {
                 padding: 16px;
                 width: 100%;
-                .buy-action {
-                    text-align: center;
-                    button {
-                        width: 49%;
-                    }
-                }
+                
             }
         }
     }
@@ -89,27 +113,34 @@
         }
         .list {
             display: flex;
+            flex-wrap: wrap;
+            justify-content: normal;
+            padding: 20px 20px 0;
             .sub-product-item {
                 background: white;
                 border-radius: 10px;
-                width: 240px;
-                margin: 30px;
+                width: 140px;
+                min-width: 140px;
+                height: 100%;
+                margin: 8px;
                 border: 1px solid;
                 cursor: pointer;
                 .image {
+                    height: 140px;
                     img {
                         width: 100%;
-                        height: 240px;
+                        height: 100%;
                         object-fit: contain;
+                        border-radius: 10px 10px 0 0;
                     }
                 }
                 .text {
                     background: #222222;
                     border-radius: 0 0 10px 10px;
-                    padding: 20px;
+                    padding: 8px;
                     color: white;
+                    font-size: 14px;
                     .title {
-                        font-size: 18px;
                         font-weight: 400;
                     }
                     .price {
@@ -127,20 +158,21 @@
         }
         @media only screen and (max-width: 900px) {
             .list {
+                justify-content: center;
+                padding: 20px 0 0 0;
                 .sub-product-item {
-                    width: 150px;
-                    margin: 20px;
-                    height: min-content;
+                    width: 120px;
+                    margin: 8px;
                     .image {
                         img {
-                            height: 150px;
+                            // height: 150px;
                         }
                         // flex: 1;
                     }
                     .text {
                         padding: 10px;
                         .title {
-                            font-size: 14px;
+                            font-size: 12px;
                         }
                         .price {
                             font-size: 14px;

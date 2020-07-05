@@ -54,7 +54,7 @@ export default function Header(props) {
         .classList.remove(classes[changeColorOnScroll.color]);
     }
   };
-  const { color, rightLinks, leftLinks, brand, fixed, absolute } = props;
+  const { color, rightLinks:RightLinks, leftLinks, brand, fixed, absolute } = props;
   const appBarClasses = classNames({
     [classes.appBar]: true,
     [classes[color]]: color,
@@ -80,7 +80,7 @@ export default function Header(props) {
           )}
         </div>
         <Hidden smDown implementation="css">
-          {rightLinks}
+          <RightLinks handleDrawerToggle={handleDrawerToggle} />
         </Hidden>
         <Hidden mdUp>
           <IconButton
@@ -104,7 +104,7 @@ export default function Header(props) {
         >
           <div className={classes.appResponsive} style={{color: 'white !important'}}>
             {leftLinks}
-            {rightLinks}
+            <RightLinks handleDrawerToggle={handleDrawerToggle} />
           </div>
         </Drawer>
       </Hidden>

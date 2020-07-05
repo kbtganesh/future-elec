@@ -4,7 +4,6 @@
         padding-top: 70px;
         height: 100vh;
         background: #f7fcff;
-
     }
 
     .parent-category,
@@ -15,27 +14,82 @@
         padding: 16px 0;
         .item {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100px;
-            height: 100px;
+            align-items: flex-end;
+            width: 200px;
+            min-width: 200px;
+            height: 200px;
+            position: relative;
             margin: 8px;
-            padding: 8px;
             text-align: center;
             border-radius: 8px;
-            background: #67757e;
-            color: white;
+            background: #e6e6e6;
+            color: #595959;
             font-weight: bold;
             cursor: pointer;
+            background-image: url(http://lorempixel.com/400/200/technics);
+            background-size: cover;
+            .overlay {
+                background: #0000007d;
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                border-radius: 8px;
+            }
+            .label {
+                padding: 8px;
+                background: #333333;
+                color: #ffffff;
+                width: 100%;
+                border-radius: 0 0 8px 8px;
+                z-index: 1;
+                box-shadow: 0px -4px 16px -10px black;
+            }
+        }
+        .item::before {
+            background: rgba(0, 0, 0, 0.5);
         }
         .item.selected {
-            background: $primaryColor;
+            // background: $primaryColor;
             font-weight: bold;
             color: white;
+            .overlay {
+                background: none;
+            }
+            .label {
+                background: $primaryColor;
+            }
         }
     }
     .parent-category {
         display: flex;
         overflow-x: auto;
+        border-bottom: 1px dashed $primaryColor;
+        box-shadow: 0px 1px 20px -8px darken($primaryColor, $amount: 50);
+    }
+
+    .child-category {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: normal;
+    }
+    // For Mobile & Tablet
+    @media only screen and (max-width: 999px) {
+        .child-category {
+            justify-content: center;
+        }
+    }
+    // For Mobile
+    @media only screen and (max-width: 599px) {
+        .parent-category,
+        .child-category {
+            .item {
+                width: 150px;
+                min-width: 100px;
+                height: 100px;
+            }
+            .label {
+                font-size: 12px;
+            }
+        }
     }
 }

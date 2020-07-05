@@ -24,26 +24,31 @@ import Router from "next/router";
 import PageChange from "components/PageChange/PageChange.js";
 
 import "assets/scss/nextjs-material-kit.scss?v=0.1.0";
-
+import LinearProgress from '@material-ui/core/LinearProgress';
 import ProductContextProvider, { ProductContext } from "../product-context";
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 
 Router.events.on("routeChangeStart", url => {
   console.log(`Loading: ${url}`);
-  document.body.classList.add("body-page-transition");
-  ReactDOM.render(
-    <PageChange path={url} />,
-    document.getElementById("page-transition")
-  );
+  let elem = document.getElementById('linear-loader');
+  elem.classList.add("show");
+  // ReactDOM.render(
+  //   <PageChange path={url} />,
+  //   document.getElementById("page-transition")
+  // );
 });
 Router.events.on("routeChangeComplete", () => {
-  ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
-  document.body.classList.remove("body-page-transition");
+  let elem = document.getElementById('linear-loader');
+  elem.classList.remove("show");
+  // ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
+  // document.body.classList.remove("body-page-transition");
 });
 Router.events.on("routeChangeError", () => {
-  ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
-  document.body.classList.remove("body-page-transition");
+  let elem = document.getElementById('linear-loader');
+  elem.classList.remove("show");
+  // ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
+  // document.body.classList.remove("body-page-transition");
 });
 
 export default class MyApp extends App {
@@ -86,13 +91,17 @@ export default class MyApp extends App {
         </Head>
         <ProductContextProvider>
           <ProductContext.Consumer>
-            {({ title }) => (<Header
+            {({ title }) => (
+            <>
+            <Header
               color="primary"
               // routes={dashboardRoutes}
               brand={title || "Happy Shopping"}
-              rightLinks={<HeaderLinks />}
+              rightLinks={HeaderLinks}
               fixed
-            />)}
+            />
+            <LinearProgress id="linear-loader" />
+            </>)}
           </ProductContext.Consumer>
           <div className="kbt">
             <Component {...pageProps} />

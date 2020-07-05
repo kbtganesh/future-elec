@@ -21,7 +21,7 @@ import styles from "assets/jss/nextjs-material-kit/components/headerLinksStyle.j
 
 const useStyles = makeStyles(styles);
 
-export default function HeaderLinks(props) {
+export default function HeaderLinks({ handleDrawerToggle }) {
   const classes = useStyles();
   return (
     <List className={classes.list}>
@@ -49,14 +49,14 @@ export default function HeaderLinks(props) {
           ]}
         />
       </ListItem> */}
-      <ListItem className={classes.listItem}> 
-        <div style={{color: 'white'}}className={classes.navLink}>
-          <Link href="/"><a>Home</a></Link>
+      <ListItem className={classes.listItem}>
+        <div className={classes.navLink}>
+          <Link href="/"><a onClick={handleDrawerToggle}>Home</a></Link>
         </div>
       </ListItem>
-      <ListItem className={classes.listItem}> 
+      <ListItem className={classes.listItem}>
         <div className={classes.navLink}>
-          <Link href="/products/category"><a>Products</a></Link>
+          <Link href="/products/category"><a onClick={handleDrawerToggle}>Products</a></Link>
         </div>
       </ListItem>
       <ListItem className={classes.listItem}>

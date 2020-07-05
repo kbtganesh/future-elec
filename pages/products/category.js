@@ -17,7 +17,7 @@ function Category({ categories }) {
 
     useEffect(() => {
         // Update the document title using the browser API
-        
+
         console.log("kbt: About -> process.env", process.env.TEST);
         setTitle('Choose Category');
     });
@@ -44,16 +44,22 @@ function Category({ categories }) {
         <div className="page-container category-container">
             <div className="parent-category">
                 {categories.map(c => (
-                    <div className={"item" + (c.key === parent ? " selected" : "")} onClick={() => selectParentCategory(c.key)}>{c.label}</div>
+                    <div className={"item" + (c.key === parent ? " selected" : "")} key={c.key} onClick={() => selectParentCategory(c.key)}>
+                        <div className="overlay"></div>
+                        <div className="label truncateLongText">{c.label}</div>
+                    </div>
                 ))}
             </div>
             <div className="child-category">
                 {parent && parentKeyCategories[parent].map((c, i) => (
                     <Grow in={true} timeout={(i + 1) * 250}>
                         {/* <Link as={`/products/list/l/${c.key}`} href={`/products/list/listing?categoryKey=${c.key}`}> */}
-                            <div className="item"
-                                onClick={() => selectChildCategory(c)}
-                            >{c.label}</div>
+                        <div className="item"
+                            onClick={() => selectChildCategory(c)}
+                        >
+                            <div className="overlay"></div>
+                            <div className="label truncateLongText">{c.label}</div>
+                        </div>
                         {/* </Link> */}
                     </Grow>
                 ))}

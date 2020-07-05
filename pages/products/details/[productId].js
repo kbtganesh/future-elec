@@ -7,21 +7,29 @@ import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import Tooltip from "@material-ui/core/Tooltip";
 import FacebookIcon from '@material-ui/icons/Facebook';
 import Button from "components/CustomButtons/Button.js";
+import Carousel from 'react-bootstrap/Carousel'
 import classNames from "classnames";
 import "./details.scss";
+import 'bootstrap/dist/css/bootstrap.min.css';
+const sampleImage = [
+    "https://www.freeiconspng.com/uploads/square-png-31.png",
+    "https://homepages.cae.wisc.edu/~ece533/images/arctichare.png",
+    "https://homepages.cae.wisc.edu/~ece533/images/airplane.png",
+    "https://homepages.cae.wisc.edu/~ece533/images/baboon.png",
+    "https://homepages.cae.wisc.edu/~ece533/images/fruits.png",
+]
+const imagePlaceholderUrl = 'https://www.ajactraining.org/wp-content/uploads/2019/09/image-placeholder-600x600.jpg';
 
 function Product({ product: productRes, query }) {
     const { setTitle } = useContext(ProductContext);
-    let productResData = productRes.data || {};
-    let productInitialState = productRes.success ? { ...productRes.data } : {};
-    const [product, setProduct] = useState(productInitialState);
-    let subProducts = productRes.data.subProducts ? { ...productRes.data.subProducts } : null;
-    console.log("kbt: Product -> product.imgUrl", product.imgUrl);
-    let imagePlaceholderUrl = 'https://www.ajactraining.org/wp-content/uploads/2019/09/image-placeholder-600x600.jpg';
+    let productResData = productRes.success ? { ...productRes.data } : {};
+    const [product, setProduct] = useState(productResData);
+    const [carouselIndex, setCarouselIndex] = useState(0);
+    let subProducts = productResData.subProducts ? { ...productResData.subProducts } : null;
     useEffect(() => {
         // Update the document title using the browser API
 
-        console.log("kbt:fromIndex About -> process.env", process.env.TEST);
+        console.log("kbt: Normal -> useEffect");
         setTitle(product && product.id);
     });
     function changeDisplayProduct(isSubProduct, id) {
@@ -32,7 +40,8 @@ function Product({ product: productRes, query }) {
         } else {
             product = { ...subProducts[id] }
         }
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0);
+        setCarouselIndex(0);
         setProduct(product)
     }
 
@@ -43,11 +52,12 @@ function Product({ product: productRes, query }) {
         }
         return idArr.map((id, i) => {
             let currentProject = i == 0 ? productResData : subProducts[id];
+            let imgUrlFirst = currentProject.imgUrlList ? currentProject.imgUrlList[0] : imagePlaceholderUrl;
             return (
                 <div className={`sub-product-item ${product.id == currentProject.id ? 'selected' : ''}`}
-                    onClick={()=>changeDisplayProduct(i != 0, currentProject.id)}>
+                    onClick={() => changeDisplayProduct(i != 0, currentProject.id)}>
                     <div className="image">
-                        <img src={currentProject.imgUrl} alt={currentProject.id} />
+                        <img src={imgUrlFirst} alt={currentProject.id} />
                     </div>
                     <div className="text">
                         <div className="title">
@@ -61,10 +71,18 @@ function Product({ product: productRes, query }) {
             )
         })
     }
+
+    function onCarouselSelect(i, a, b) {
+        console.log("kbt: onCarouselSelect -> i,a,b", i, a, b);
+        setCarouselIndex(i);
+    }
+
+
     return (
         <div className="page-container details-page">
             <div className="product-container">
-                <img src={product.imgUrl || imagePlaceholderUrl} alt="product-image" />
+                <RenderImage {...{ product, onCarouselSelect, carouselIndex }} />
+                {/* <img src={product.imgUrl || imagePlaceholderUrl} alt="product-image" /> */}
                 <div className="product-details">
                     <div className="title">{product.title}</div>
                     <div className="brand">{product.brand}</div>
@@ -74,12 +92,16 @@ function Product({ product: productRes, query }) {
                         {!!product.strikePrice && <div className="strike-price">₹ {product.strikePrice}</div>}
                     </div>
                     <div className="buy-action">
-                        <Button color="success" startIcon={<WhatsAppIcon />}>
-                            <a href={`https://api.whatsapp.com/send?phone=919566992686&text=Hi, I want to buy ${product.title} - ${product.id}`}>Buy via Whatsapp</a>
-                        </Button>
-                        <Button color="facebook" startIcon={<FacebookIcon />}>
-                            <a href={`https://m.me/allinoneworld?ref=Hellow world`}>Buy via Facebook</a>
-                        </Button>
+                        <a id="whatsapp-link" target="_blank" href={`https://api.whatsapp.com/send?phone=919566992686&text=Hi, I want to buy ${product.title} - ${product.id}`}>
+                            <Button for="whatsapp-link" color="success" startIcon={<WhatsAppIcon />}>
+                                Buy via Whatsapp
+                            </Button>
+                        </a>
+                        <a id="facebook-link" target="_blank" href={`https://m.me/allinoneworld?ref=Hi, I want to buy ${product.title} - ${product.id}`}>
+                            <Button for="facebook-link" color="facebook" startIcon={<FacebookIcon />}>
+                                Buy via Facebook
+                            </Button>
+                        </a>
                     </div>
                     <div className="icons">
                         <Tooltip title={`${product.codAvailable ? 'COD Available' : 'COD Not Available'}`}>
@@ -110,6 +132,24 @@ function Product({ product: productRes, query }) {
                 <li key={product.inStock}>{product.inStock ? 'Yes' : 'No'}</li>
             </ul> */}
         </div>
+    )
+}
+
+function RenderImage({ product, onCarouselSelect, carouselIndex }) {
+    console.log("kbt: RenderImage -> product", product.id);
+    console.log("kbt: RenderImage -> carouselIndex", carouselIndex);
+    let imgUrlList = product.imgUrlList ? product.imgUrlList.filter(url => !!url) : [imagePlaceholderUrl];
+    return (
+        <Carousel activeIndex={carouselIndex} onSelect={onCarouselSelect} className="img-carousel">
+            {imgUrlList.map((imgUrl, i) => (
+                <Carousel.Item key={i}>
+                    <img
+                        src={imgUrl || imagePlaceholderUrl}
+                        alt={`${product.id} - Image ${i + 1}`}
+                    />
+                </Carousel.Item>
+            ))}
+        </Carousel>
     )
 }
 

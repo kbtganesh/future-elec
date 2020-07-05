@@ -8,3 +8,29 @@ $grayColor: #999999;
 .main-container {
     background-color: $primaryColor;
 }
+
+#linear-loader.show {
+    display: block;
+    height: 4px;
+    width: 100%;
+    top: 70px;
+    position: fixed;
+    z-index: 1100;
+    @media only screen and (max-width: 900px) {
+        height: 2px;
+    }
+}
+#linear-loader {
+    display: none;
+}
+
+a, a:visited, a:hover{
+    color: inherit!important;
+    text-decoration: none!important;
+}
+
+.truncateLongText {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
