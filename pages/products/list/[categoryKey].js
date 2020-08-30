@@ -119,7 +119,7 @@ export async function getServerSideProps({params, query}) {
     try {
         console.log("***********")
         console.log("URL", 'https://us-central1-eeradi.cloudfunctions.net/api/products/category/' + categoryKey + queryParam);
-        const res = await fetch('http://localhost:5001/eeradi/us-central1/api/products/category/' + categoryKey + queryParam)
+        const res = await fetch('https://us-central1-eeradi.cloudfunctions.net/api/products/category/' + categoryKey + queryParam)
         response = await res.json();
     } catch (e) {
         response.errorMessage = e.errorMessage || 'Unknown Error Occured';
