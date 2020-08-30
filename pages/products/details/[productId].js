@@ -195,7 +195,7 @@ export async function getServerSideProps(arg) {
         const res = await fetch(`https://us-central1-eeradi.cloudfunctions.net/api/products/detail/${params.productId}`)
         product = await res.json()
     } catch (error) {
-        product.errorMessage = e.errorMessage || 'Unknown Error Occured';
+        product.errorMessage = error && error.errorMessage || 'Unknown Error Occured';
     }
 
     // By returning { props: posts }, the Blog component
