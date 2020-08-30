@@ -6,6 +6,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import Tooltip from "@material-ui/core/Tooltip";
 import FacebookIcon from '@material-ui/icons/Facebook';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import Button from "components/CustomButtons/Button.js";
 import Carousel from 'react-bootstrap/Carousel'
 import classNames from "classnames";
@@ -77,9 +78,14 @@ function Product({ product: productRes, query }) {
         setCarouselIndex(i);
     }
 
-
+    let percentageOffer;
+    if (product.strikePrice && product.price)
+        percentageOffer = (product.strikePrice - product.price) * 100 / product.strikePrice;
     return (
         <div className="page-container details-page">
+            {productRes && !!productRes.errorMessage && <h1 style={{ textAlign: 'center' }}>
+                {errorMessage}
+            </h1>}
             <div className="product-container">
                 <RenderImage {...{ product, onCarouselSelect, carouselIndex }} />
                 {/* <img src={product.imgUrl || imagePlaceholderUrl} alt="product-image" /> */}
@@ -90,15 +96,29 @@ function Product({ product: productRes, query }) {
                     <div className="price">
                         <div className="actual-price">₹ {product.price}</div>
                         {!!product.strikePrice && <div className="strike-price">₹ {product.strikePrice}</div>}
+                        {!!percentageOffer &&
+                            <div className="percentageOffer">
+                                {Math.round(percentageOffer)}% off
+                        </div>
+                        }
                     </div>
+                    {product.shippingPrice && <div className="shippingPrice">
+                        <div className="title">
+                            <label>Delivery</label>
+                            <LocalShippingIcon />
+                        </div>
+                        <div className="price">
+                            ₹ {product.shippingPrice}
+                        </div>
+                    </div>}
                     <div className="buy-action">
                         <a id="whatsapp-link" target="_blank" href={`https://api.whatsapp.com/send?phone=919566992686&text=Hi, I want to buy ${product.title} - ${product.id}`}>
-                            <Button for="whatsapp-link" color="success" startIcon={<WhatsAppIcon />}>
+                            <Button htmlFor="whatsapp-link" color="success" startIcon={<WhatsAppIcon />}>
                                 Buy via Whatsapp
                             </Button>
                         </a>
-                        <a id="facebook-link" target="_blank" href={`https://m.me/allinoneworld?ref=Hi, I want to buy ${product.title} - ${product.id}`}>
-                            <Button for="facebook-link" color="facebook" startIcon={<FacebookIcon />}>
+                        <a id="facebook-link" target="_blank" href={`https://m.me/arun21031991?ref=Hi, I want to buy ${product.title} - ${product.id}`}>
+                            <Button htmlFor="facebook-link" color="facebook" startIcon={<FacebookIcon />}>
                                 Buy via Facebook
                             </Button>
                         </a>
@@ -170,8 +190,13 @@ export async function getServerSideProps(arg) {
     //     product = null;
     // }
     // Call an external API endpoint to get posts
-    const res = await fetch(`https://us-central1-eeradi.cloudfunctions.net/api/products/detail/${params.productId}`)
-    const product = await res.json()
+    const product = {};
+    try {
+        const res = await fetch(`https://us-central1-eeradi.cloudfunctions.net/api/products/detail/${params.productId}`)
+        product = await res.json()
+    } catch (error) {
+        product.errorMessage = e.errorMessage || 'Unknown Error Occured';
+    }
 
     // By returning { props: posts }, the Blog component
     // will receive `posts` as a prop at build time

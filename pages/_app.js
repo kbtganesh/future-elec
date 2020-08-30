@@ -91,13 +91,15 @@ export default class MyApp extends App {
         </Head>
         <ProductContextProvider>
           <ProductContext.Consumer>
-            {({ title }) => (
+            {({ title, categories, setCategories }) => (
             <>
             <Header
               color="primary"
               // routes={dashboardRoutes}
               brand={title || "Happy Shopping"}
               rightLinks={HeaderLinks}
+              setCategories={setCategories}
+              categories={categories}
               fixed
             />
             <LinearProgress id="linear-loader" />

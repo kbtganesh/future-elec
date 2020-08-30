@@ -145,6 +145,7 @@ const headerStyle = {
     textAlign: "left",
     paddingRight: "0px",
     paddingLeft: "0",
+    overflow: "auto",
     ...transition
   }
 };

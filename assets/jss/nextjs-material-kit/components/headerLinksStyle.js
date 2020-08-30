@@ -21,6 +21,7 @@ const headerLinksStyle = theme => ({
     width: "auto",
     margin: "0",
     padding: "0",
+    cursor: 'pointer',
     [theme.breakpoints.down("sm")]: {
       width: "100%",
       "&:after": {
@@ -54,7 +55,7 @@ const headerLinksStyle = theme => ({
     },
     [theme.breakpoints.down("sm")]: {
       width: "calc(100% - 30px)",
-      marginLeft: "15px",
+      marginLeft: "8px",
       marginBottom: "8px",
       marginTop: "8px",
       textAlign: "left",
@@ -119,6 +120,17 @@ const headerLinksStyle = theme => ({
   ...tooltip,
   marginRight5: {
     marginRight: "5px"
+  },
+  treeStyle: {
+    flexGrow: 1,
+    maxWidth: 400,
+  },
+  popoverPaper: {
+    width: '300px',
+    height: 'auto',
+    maxHeight: 'unset',
+    // left: '5% !important',
+    position: 'absolute'
   }
 });
 

@@ -5,22 +5,28 @@ import { ProductContext } from "../../../product-context";
 import "./list.scss";
 import Snackbar from '@material-ui/core/Snackbar';
 
-function List({ response }) {
+function List({ response, params, query }) {
+    console.log("kbt: List -> query", query);
+    console.log("kbt: List -> params", params);
     let { success, data, errorMessage } = response || {};
-
-    console.log("kbt:fromIndex List -> response", response);
-    const { product, setProduct, category, setTitle } = useContext(ProductContext);
+    let { categoryKey } = params;
+    console.log("kbt: List -> categoryKey", categoryKey);
+    const { product, setProduct, category, setTitle, childCategories } = useContext(ProductContext);
+    console.log("kbt: List -> childCategories", childCategories);
     const [count, setCount] = useState(0);
     const [parent, setParent] = useState();
-    const [child, setChild] = useState();
+    console.log("kbt: List -> childCategories[categoryKey]", childCategories[categoryKey]);
+    const [child, setChild] = useState(query && query.child || '');
+    console.log("kbt: List -> child", child);
 
     useEffect(() => {
-        // Update the document title using the browser API
-        
-        console.log("kbt:fromIndex About -> process.env", process.env.TEST);
         setTitle(category.label);
-        console.log("kbt:fromIndex List -> category", category);
-    });
+    }, []);
+
+    useEffect(() => {
+        hideLoader();
+        setChild(query && query.child || '');
+    }, [query]);
     // async function fetchData() {
     //     const res = await fetch('https://us-central1-eeradi.cloudfunctions.net/api/products')
     //     setData(await res.json());
@@ -40,27 +46,52 @@ function List({ response }) {
         Router.push(`/products/details/[productId]`, `/products/details/${product.id}`);
     }
 
+    function showLoader() {
+        let elem = document.getElementById('linear-loader');
+        console.log("kbt: showLoader -> elem", elem);
+        elem.classList.add("show");
+    }
+
+    function hideLoader() {
+        let elem = document.getElementById('linear-loader');
+        elem.classList.remove("show");
+    }
+
     function selectChildCategory(childKey) {
         setChild(childKey);
     }
 
+    function onClickChildCategory(child) {
+        setChild(child);
+        showLoader();
+        Router.push(`/products/list/[categoryKey]?child=${child}`, `/products/list/${categoryKey}?child=${child}`);
+    }
+    const childCategoryList = childCategories && childCategories[categoryKey] || [];
     return (
         <div className="page-container">
             <Snackbar open={!!errorMessage} autoHideDuration={6000} message={errorMessage}>
             </Snackbar>
+            {childCategoryList && childCategoryList.length > 0 && <div className="filterByChildCategory">
+                <div className={`childCategory ${child == 'all' ? 'selected' : ''}`} onClick={() => onClickChildCategory('all')}>All</div>
+                {childCategoryList.map(c => (
+                    <div className={`childCategory ${child == c.key ? 'selected' : ''}`} key={c.key} onClick={() => onClickChildCategory(c.key)}>
+                        {c['label']}
+                    </div>)
+                )}
+            </div>}
             {!!errorMessage && <h1 style={{ textAlign: 'center' }}>
                 {errorMessage}
             </h1>}
             {data && <div className="product-card-container">
                 {data.map(d => (
-                    <div className={"product-card"} onClick={() => selectProduct(d)}>
+                    <div key={d.id} className={"product-card"} onClick={() => selectProduct(d)}>
                         <img src={(d.imgUrlList && d.imgUrlList[0]) || require('./no-image.png')} />
                         <div className="info">
                             <div className="title">{d.title}</div>
                             <div className="brand">{d.brand}</div>
                             <div className="price">
                                 <div className="actual-price">₹{d.price}</div>
-                                {!!d.strikePrice && <div className="strike-price">₹ {d.strike}</div>}
+                                {!!d.strikePrice && <div className="strike-price">₹ {d.strikePrice}</div>}
                             </div>
                         </div>
                     </div>
@@ -77,24 +108,28 @@ function List({ response }) {
     )
 }
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({params, query}) {
     console.log("kbt: getServerSideProps -> param", params);
     let { categoryKey } = params;
+    let child = query && query.child || '';
+    let queryParam = child && child != 'all' ? '?child='+child : '';
     console.log("kbt:fromIndexfromindex getServerSideProps -> categoryKey", categoryKey);
     // Call an external API endpoint to get posts
     let response = {};
     try {
-        const res = await fetch('https://us-central1-eeradi.cloudfunctions.net/api/products/category/' + categoryKey)
+        console.log("***********")
+        console.log("URL", 'https://us-central1-eeradi.cloudfunctions.net/api/products/category/' + categoryKey + queryParam);
+        const res = await fetch('http://localhost:5001/eeradi/us-central1/api/products/category/' + categoryKey + queryParam)
         response = await res.json();
     } catch (e) {
-        response.errorMessage = e || 'Unknown Error Occured';
+        response.errorMessage = e.errorMessage || 'Unknown Error Occured';
     }
 
     // By returning { props: posts }, the Blog component
     // will receive `posts` as a prop at build time
     return {
         props: {
-            response
+            response, params, query
         },
     }
 }

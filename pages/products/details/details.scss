@@ -42,13 +42,39 @@
                 color: #989898;
             }
             .price {
+                display: flex;
+                align-items: baseline;
+                grid-gap: 12px;
                 .actual-price {
                     font-weight: bold;
-                    font-size: 24px;
+                    font-size: 26px;
                 }
                 .strike-price {
                     color: #989898;
-                    text-decoration: overline;
+                    text-decoration: line-through;
+                }
+                .percentageOffer {
+                    color: green;
+                    font-weight: bold;
+                }
+            }
+            .shippingPrice {
+                .title {
+                    label {
+                        font-weight: bold;
+                        font-size: 16px;
+                        margin: 0;
+                        color: #525252;
+                    }
+                    svg {
+                        font-size: 20px;
+                        margin-top: 6px;
+                        margin-left: 10px;
+                        color: #525252;
+                    }
+                }
+                .price {
+                    font-weight: bold;
                 }
             }
             .buy-action {
@@ -101,7 +127,6 @@
             .product-details {
                 padding: 16px;
                 width: 100%;
-                
             }
         }
     }

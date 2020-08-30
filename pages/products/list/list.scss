@@ -1,8 +1,29 @@
+@import "../../main.scss";
+
 .product-list-container {
     padding-top: 70px;
     height: 100%;
     min-height: 100vh;
     background: #f7fcff;
+}
+
+.filterByChildCategory {
+    display: flex;
+    margin: 20px;
+    justify-content: center;
+    grid-gap: 12px;
+    .childCategory {
+        cursor: pointer;
+        padding: 2px 12px;
+        border: 1px solid #aeaeae;
+        border-radius: 20px;
+        &.selected {
+            border: none;
+            color: white;
+            background: $primaryColor;
+            padding-top: 4px;
+        }
+    }
 }
 
 .product-card-container {
@@ -19,14 +40,14 @@
         background: white;
         font-weight: bold;
         margin: 16px 0;
-        height: 380px;
+        height: auto;
         width: 100%;
         max-width: 280px;
         cursor: pointer;
         border: 1px solid #e3e3e3;
         img {
             object-fit: cover;
-            height: 75%;
+            height: 280px;
             width: 100%;
             background: gainsboro;
         }
@@ -35,14 +56,15 @@
             align-items: start;
             flex-direction: column;
             justify-content: space-around;
-            height: 25%;
+            height: auto;
             padding-left: 16px;
+            margin-top: 8px;
             .title {
                 font-size: 20px;
                 text-align: left;
                 overflow: hidden;
                 width: 100%;
-                white-space: nowrap;
+                // white-space: nowrap;
                 text-overflow: ellipsis;
             }
             .brand {
@@ -69,11 +91,15 @@
     .product-card-container {
         grid-template-columns: repeat(auto-fill, minmax(100px, 240px));
         .product-card {
-            height: 300px;
+            height: auto;
             max-width: 220px;
+            img {
+                height: 220px;
+            }
             .info {
+                height: auto;
                 .title {
-                    font-size: 18px;
+                    font-size: 16px;
                 }
                 .brand {
                     font-size: 14px;

@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from "react";
+import React, { useEffect, useContext } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -31,12 +31,18 @@ const useStyles = makeStyles(styles);
 
 export default function LandingPage(props) {
   const classes = useStyles();
-  const { product, setProduct, setTitle, setCategory } = useContext(ProductContext);
+  const { product, setProduct, setTitle, setCategories } = useContext(ProductContext);
 
   const { ...rest } = props;
   useEffect(() => {
-    setTitle('Happy Shopping');
-});
+  });
+  // useEffect(async () => {
+  //   setTitle('Happy Shopping');
+  //   let categoriesResponse = await fetch('https://us-central1-eeradi.cloudfunctions.net/api/products/categories');
+  //   let categories = await categoriesResponse.json();
+  //   setCategories(categories);
+  // }, []);
+
   return (
     <div className='main-container'>
       {/* <Header

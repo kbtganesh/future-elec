@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import Link from "next/link";
 // nodejs library that concatenates classes
 import classNames from "classnames";
@@ -16,10 +16,13 @@ import Drawer from "@material-ui/core/Drawer";
 import Menu from "@material-ui/icons/Menu";
 // core components
 import styles from "assets/jss/nextjs-material-kit/components/headerStyle.js";
+import { ProductContext } from "../../product-context";
+
 
 const useStyles = makeStyles(styles);
 
 export default function Header(props) {
+  const { setCategories, setChildCategories } = useContext(ProductContext);
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   React.useEffect(() => {
@@ -32,6 +35,28 @@ export default function Header(props) {
       }
     };
   });
+  React.useEffect(() => {
+    (async function fetchData() {
+      if(setCategories) {
+        console.log("kbt: fetchData -> setCategories", setCategories);
+        let categoriesResponse = await fetch('https://us-central1-eeradi.cloudfunctions.net/api/products/categories');
+        let categories = await categoriesResponse.json();
+        console.log("kbt: Header -> useEffect", categories);
+        if(categories.data)
+        setCategories(categories.data);
+        setChildCategories(prepareChildCategories(categories.data));
+      }
+    })();
+    function prepareChildCategories(categories = []) {
+      return categories.reduce && categories.reduce((a, v) => {
+        if (v.child)
+          v.child.forEach(d => {
+            if (d.child) a[d.key] = d.child;
+          });
+        return a;
+      }, {});
+    }
+  }, [setCategories])
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -104,7 +129,7 @@ export default function Header(props) {
         >
           <div className={classes.appResponsive} style={{color: 'white !important'}}>
             {leftLinks}
-            <RightLinks handleDrawerToggle={handleDrawerToggle} />
+            <RightLinks handleDrawerToggle={handleDrawerToggle} categories={props.categories} />
           </div>
         </Drawer>
       </Hidden>
@@ -128,7 +153,7 @@ Header.propTypes = {
     "rose",
     "dark"
   ]),
-  rightLinks: PropTypes.node,
+  rightLinks: PropTypes.any,
   leftLinks: PropTypes.node,
   brand: PropTypes.string,
   fixed: PropTypes.bool,

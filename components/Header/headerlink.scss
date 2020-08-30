@@ -1,0 +1,38 @@
+.parent > .MuiTreeItem-content{
+    padding: 16px 0 16px 20px;
+}
+.MuiTreeItem-content {
+    // flex-direction: row-reverse;
+    padding: 8px 0;
+    padding-left: 20px;
+    margin-left: -4px;
+    .MuiTypography-body1 {
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+        font-weight: 300;
+        line-height: 1.5em;
+    }
+    & > .MuiTypography-body1.MuiTreeItem-label:hover {
+        background: none !important;
+    }
+    &:hover {
+        background-color: #0000000a;
+    }
+}
+.MuiTreeItem-root.Mui-selected > .MuiTreeItem-content, .MuiTreeItem-content {
+    background: none !important;
+    color: black !important;
+    &:hover {
+        background: none !important;
+    }
+    & > .MuiTreeItem-label {
+        background: none !important;
+    }
+}
+
+.desktopTreeView {
+    & > li > .MuiTreeItem-content {
+        .MuiTreeItem-label {
+            font-weight: bold;
+        }
+    }
+}
