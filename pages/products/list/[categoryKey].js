@@ -83,19 +83,29 @@ function List({ response, params, query }) {
                 {errorMessage}
             </h1>}
             {data && <div className="product-card-container">
-                {data.map(d => (
-                    <div key={d.id} className={"product-card"} onClick={() => selectProduct(d)}>
-                        <img src={(d.imgUrlList && d.imgUrlList[0]) || require('./no-image.png')} />
-                        <div className="info">
-                            <div className="title">{d.title}</div>
-                            <div className="brand">{d.brand}</div>
-                            <div className="price">
-                                <div className="actual-price">₹{d.price}</div>
-                                {!!d.strikePrice && <div className="strike-price">₹ {d.strikePrice}</div>}
+                {data.map(d => {
+                    let percentageOffer;
+                    if (d.strikePrice && d.price)
+                        percentageOffer = (d.strikePrice - d.price) * 100 / d.strikePrice;
+                    return (
+                        <div key={d.id} className={"product-card"} onClick={() => selectProduct(d)}>
+                            <img src={(d.imgUrlList && d.imgUrlList[0]) || require('./no-image.png')} />
+                            <div className="info">
+                                <div className="title">{d.title}</div>
+                                <div className="brand">{d.brand}</div>
+                                <div className="price">
+                                    <div className="actual-price">₹{d.price}</div>
+                                    {!!d.strikePrice && <div className="strike-price">₹ {d.strikePrice}</div>}
+                                    {!!percentageOffer &&
+                                        <div className="percentageOffer">
+                                            {Math.round(percentageOffer)}% off
+                                    </div>
+                                    }
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    )
+                })}
             </div>}
             {/* <div className="child-category">
                 {parent && childCategories[parent].map((c, i) => (
@@ -108,11 +118,11 @@ function List({ response, params, query }) {
     )
 }
 
-export async function getServerSideProps({params, query}) {
+export async function getServerSideProps({ params, query }) {
     console.log("kbt: getServerSideProps -> param", params);
     let { categoryKey } = params;
     let child = query && query.child || '';
-    let queryParam = child && child != 'all' ? '?child='+child : '';
+    let queryParam = child && child != 'all' ? '?child=' + child : '';
     console.log("kbt:fromIndexfromindex getServerSideProps -> categoryKey", categoryKey);
     // Call an external API endpoint to get posts
     let response = {};

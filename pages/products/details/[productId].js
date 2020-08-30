@@ -81,12 +81,13 @@ function Product({ product: productRes, query }) {
     let percentageOffer;
     if (product.strikePrice && product.price)
         percentageOffer = (product.strikePrice - product.price) * 100 / product.strikePrice;
+    let errorMessage = (productRes && productRes.errorMessage) ? productRes.errorMessage : '';
     return (
         <div className="page-container details-page">
-            {productRes && !!productRes.errorMessage && <h1 style={{ textAlign: 'center' }}>
+            {!!errorMessage && <h1 style={{ textAlign: 'center' }}>
                 {errorMessage}
             </h1>}
-            <div className="product-container">
+            {product && product.id && <div className="product-container">
                 <RenderImage {...{ product, onCarouselSelect, carouselIndex }} />
                 {/* <img src={product.imgUrl || imagePlaceholderUrl} alt="product-image" /> */}
                 <div className="product-details">
@@ -103,10 +104,7 @@ function Product({ product: productRes, query }) {
                         }
                     </div>
                     {product.shippingPrice && <div className="shippingPrice">
-                        <div className="title">
-                            <label>Delivery</label>
-                            <LocalShippingIcon />
-                        </div>
+                        <span className="title">Delivery</span>
                         <div className="price">
                             ₹ {product.shippingPrice}
                         </div>
@@ -136,7 +134,7 @@ function Product({ product: productRes, query }) {
                         </Tooltip>
                     </div>
                 </div>
-            </div>
+            </div>}
             {subProducts && <div className="sub-product-container">
                 <div className="heading">
                     Other Varients
@@ -190,7 +188,7 @@ export async function getServerSideProps(arg) {
     //     product = null;
     // }
     // Call an external API endpoint to get posts
-    const product = {};
+    let product = {};
     try {
         const res = await fetch(`https://us-central1-eeradi.cloudfunctions.net/api/products/detail/${params.productId}`)
         product = await res.json()
