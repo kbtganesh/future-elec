@@ -16,8 +16,10 @@
                 height: 400px;
                 padding: 0 32px;
                 object-fit: contain;
+                padding-top: 16px;
             }
             .carousel-indicators {
+                bottom: 100px;
                 @media only screen and (max-width: 900px) {
                     bottom: -40px;
                 }
@@ -29,7 +31,7 @@
         .product-details {
             display: grid;
             grid-gap: 12px;
-            padding: 48px 16px 48px 0;
+            padding: 24px 16px 48px 0;
             height: max-content;
             .title {
                 font-size: 24px;
@@ -66,8 +68,8 @@
                 grid-gap: 6px;
                 color: #525252;
                 .title {
-                        font-size: 16px;
-                        margin: 0;
+                    font-size: 16px;
+                    margin: 0;
                 }
                 .price {
                     font-weight: 500;
@@ -86,6 +88,17 @@
                 }
                 button {
                     width: 100%;
+                }
+            }
+            .productId {
+                display: flex;
+                align-items: center;
+                grid-gap: 8px;
+                font-weight: 500;
+                color: #525252;
+                svg {
+                    font-size: 20px;
+                    cursor: pointer;
                 }
             }
             .icons {

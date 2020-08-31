@@ -69,7 +69,7 @@ function List({ response, params, query }) {
     const childCategoryList = childCategories && childCategories[categoryKey] || [];
     return (
         <div className="page-container">
-            <Snackbar open={!!errorMessage} autoHideDuration={6000} message={errorMessage}>
+            <Snackbar open={!!errorMessage} autoHideDuration={4000} message={errorMessage}>
             </Snackbar>
             {childCategoryList && childCategoryList.length > 0 && <div className="filterByChildCategory">
                 <div className={`childCategory ${child == 'all' ? 'selected' : ''}`} onClick={() => onClickChildCategory('all')}>All</div>

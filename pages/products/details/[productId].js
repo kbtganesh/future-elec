@@ -7,11 +7,13 @@ import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import Tooltip from "@material-ui/core/Tooltip";
 import FacebookIcon from '@material-ui/icons/Facebook';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 import Button from "components/CustomButtons/Button.js";
 import Carousel from 'react-bootstrap/Carousel'
 import classNames from "classnames";
 import "./details.scss";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Snackbar from '@material-ui/core/Snackbar';
 const sampleImage = [
     "https://www.freeiconspng.com/uploads/square-png-31.png",
     "https://homepages.cae.wisc.edu/~ece533/images/arctichare.png",
@@ -25,6 +27,7 @@ function Product({ product: productRes, query }) {
     const { setTitle } = useContext(ProductContext);
     let productResData = productRes.success ? { ...productRes.data } : {};
     const [product, setProduct] = useState(productResData);
+    const [toastMessage, setToastMessage] = useState('');
     const [carouselIndex, setCarouselIndex] = useState(0);
     let subProducts = productResData.subProducts ? { ...productResData.subProducts } : null;
     useEffect(() => {
@@ -78,16 +81,29 @@ function Product({ product: productRes, query }) {
         setCarouselIndex(i);
     }
 
+    function copyText(text) {    
+        console.log("kbt: copyText -> text", text);
+        let input = document.createElement('textarea');    
+        input.innerHTML = text;    
+        document.body.appendChild(input);    
+        input.select();    
+        let result = document.execCommand('copy');    
+        document.body.removeChild(input);
+        setToastMessage('Product ID is Copied');
+    }
+
     let percentageOffer;
     if (product.strikePrice && product.price)
         percentageOffer = (product.strikePrice - product.price) * 100 / product.strikePrice;
-    let errorMessage = (productRes && productRes.errorMessage) ? productRes.errorMessage : '';
+    let notFoundMessage = (productRes && productRes.errorMessage) ? productRes.errorMessage : '';
     return (
         <div className="page-container details-page">
-            {!!errorMessage && <h1 style={{ textAlign: 'center' }}>
-                {errorMessage}
+            {!!notFoundMessage && <h1 style={{ textAlign: 'center' }}>
+                {notFoundMessage}
             </h1>}
             {product && product.id && <div className="product-container">
+                <Snackbar open={!!toastMessage} autoHideDuration={3000} message={toastMessage} onClose={()=>setToastMessage('')}>
+                </Snackbar>
                 <RenderImage {...{ product, onCarouselSelect, carouselIndex }} />
                 {/* <img src={product.imgUrl || imagePlaceholderUrl} alt="product-image" /> */}
                 <div className="product-details">
@@ -120,6 +136,12 @@ function Product({ product: productRes, query }) {
                                 Buy via Facebook
                             </Button>
                         </a>
+                    </div>
+                    <div className="productId">
+                        <span> Product ID - {product.id}</span>
+                        <div onClick={()=>copyText(product.id)}>
+                            <FileCopyIcon/>
+                        </div>
                     </div>
                     <div className="icons">
                         <Tooltip title={`${product.codAvailable ? 'COD Available' : 'COD Not Available'}`}>

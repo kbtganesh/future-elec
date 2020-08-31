@@ -50,10 +50,12 @@
         cursor: pointer;
         border: 1px solid #e3e3e3;
         img {
-            object-fit: cover;
+            object-fit: contain;
+            padding: 8px;
+            border: none;
+            background: white;
             height: 280px;
             width: 100%;
-            background: gainsboro;
         }
         .info {
             display: flex;
