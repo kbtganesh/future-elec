@@ -52,11 +52,11 @@ function Product({ product: productRes, query }) {
     function renderSubProduct() {
         let idArr = [];
         if (productRes?.data?.subProducts) {
-            idArr = [productRes.data.id, Object.keys(productRes.data.subProducts)]
+            idArr = [productRes.data.id, ...Object.keys(productRes.data.subProducts)]
         }
         return idArr.map((id, i) => {
             let currentProject = i == 0 ? productResData : subProducts[id];
-            let imgUrlFirst = currentProject.imgUrlList ? currentProject.imgUrlList[0] : imagePlaceholderUrl;
+            let imgUrlFirst = currentProject.imgUrlList && currentProject.imgUrlList[0] || imagePlaceholderUrl;
             return (
                 <div className={`sub-product-item ${product.id == currentProject.id ? 'selected' : ''}`}
                     onClick={() => changeDisplayProduct(i != 0, currentProject.id)}>

@@ -34,3 +34,8 @@ a, a:visited, a:hover{
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
+img::before {
+    content: ' ';
+    background-image: url(/images/noImage.png);
+}

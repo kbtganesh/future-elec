@@ -157,12 +157,7 @@ export default function HeaderLinks({ handleDrawerToggle }) {
           </TreeView>
         </ListItem>
       </Hidden>
-      <ListItem className={classes.listItem}>
-        {/*<Tooltip title="Delete">
-          <IconButton aria-label="Delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>*/}
+      {/* <ListItem className={classes.listItem}>
         <Tooltip
           id="instagram-twitter"
           title="Follow us on twitter"
@@ -178,7 +173,7 @@ export default function HeaderLinks({ handleDrawerToggle }) {
             <i className={classes.socialIcons + " fab fa-twitter"} />
           </Button>
         </Tooltip>
-      </ListItem>
+      </ListItem> */}
       <ListItem className={classes.listItem}>
         <Tooltip
           id="instagram-facebook"
@@ -188,7 +183,7 @@ export default function HeaderLinks({ handleDrawerToggle }) {
         >
           <Button
             color="transparent"
-            href="https://www.facebook.com/CreativeTim?ref=creativetim"
+            href="https://www.facebook.com/allinoneworld"
             target="_blank"
             className={classes.navLink}
           >
@@ -205,7 +200,7 @@ export default function HeaderLinks({ handleDrawerToggle }) {
         >
           <Button
             color="transparent"
-            href="https://www.instagram.com/CreativeTimOfficial?ref=creativetim"
+            href="https://www.instagram.com/"
             target="_blank"
             className={classes.navLink}
           >

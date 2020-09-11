@@ -64,7 +64,8 @@ function List({ response, params, query }) {
     function onClickChildCategory(child) {
         setChild(child);
         showLoader();
-        Router.push(`/products/list/[categoryKey]?child=${child}`, `/products/list/${categoryKey}?child=${child}`);
+        Router.push(`/products/list/[categoryKey]?child=${child}`, `/products/list/${categoryKey}?child=${child}`)
+            .then(_ => window.scrollTo(0, 0));
     }
     const childCategoryList = childCategories && childCategories[categoryKey] || [];
     return (
@@ -89,7 +90,7 @@ function List({ response, params, query }) {
                         percentageOffer = (d.strikePrice - d.price) * 100 / d.strikePrice;
                     return (
                         <div key={d.id} className={"product-card"} onClick={() => selectProduct(d)}>
-                            <img src={(d.imgUrlList && d.imgUrlList[0]) || require('./no-image.png')} />
+                            <img src={(d.imgUrlList && d.imgUrlList[0]) || require('public/images/noImage.png')} />
                             <div className="info">
                                 <div className="title">{d.title}</div>
                                 <div className="brand">{d.brand}</div>
