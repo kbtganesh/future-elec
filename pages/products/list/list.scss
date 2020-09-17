@@ -109,6 +109,12 @@ $filterByCategoryHeight: 70px;
     }
 }
 
+.loadMore {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
 @media only screen and (max-width: 899px) {
     .product-card-container {
         grid-template-columns: repeat(auto-fill, minmax(100px, 240px));
