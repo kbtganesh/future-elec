@@ -24,7 +24,7 @@ function List({ response, params, query }) {
     const [loadMoreBtn, setLoadMoreBtn] = useState(true);
     console.log("kbt: List -> childCategories[categoryKey]", childCategories[categoryKey]);
     const [child, setChild] = useState(query && query.child || '');
-    const [scroll, setScroll] = useState({x: 0, y: 0});
+    const [scroll, setScroll] = useState({ x: 0, y: 0 });
     console.log("kbt: List -> child", child);
 
     useEffect(() => {
@@ -77,7 +77,7 @@ function List({ response, params, query }) {
     }
 
     function onClickChildCategory(child) {
-        setScroll({x: 0, y: 0});
+        setScroll({ x: 0, y: 0 });
         setChild(child);
         showLoader();
         Router.push(`/products/list/[categoryKey]?child=${child}`, `/products/list/${categoryKey}?child=${child}`)
@@ -90,22 +90,28 @@ function List({ response, params, query }) {
         let trackId = lastitem && lastitem.id || '';
         let url = `${DOMAIN}/api/products/category/${params.categoryKey}` +
             `?child=${child}&trackId=${trackId}`;
-        let rawres = await fetch(url);
-        let res = await rawres.json();
-        if(res.success && res.data && res.data.length > 0) {
-            setScroll({x: 0, y: scrollY});
-            setData(pd => ([...pd, ...res.data]));
-        }else {
-            if(res.errorCode == 1001)
-            setLoadMoreBtn(false);
-            setMessage('No more products available');
+        showLoader();
+        try {
+            let rawres = await fetch(url);
+            let res = await rawres.json();
+            hideLoader();
+            if (res.success && res.data && res.data.length > 0) {
+                setScroll({ x: 0, y: scrollY });
+                setData(pd => ([...pd, ...res.data]));
+            } else {
+                if (res.errorCode == 1001)
+                    setLoadMoreBtn(false);
+                setMessage('No more products available');
+            }
+        } catch (error) {
+            hideLoader();
         }
     }
 
     function onCloseMessage() {
         setMessage('');
     }
-    
+
     const childCategoryList = childCategories && childCategories[categoryKey] || [];
     return (
         <div className="page-container">
