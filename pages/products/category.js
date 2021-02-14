@@ -6,6 +6,7 @@ import HeaderLinks from "components/Header/HeaderLinks.js";
 import { ProductContext } from "../../product-context";
 import "./products.scss";
 import Grow from '@material-ui/core/Grow';
+import { BASE_URL } from "helper";
 
 function Category({ categories }) {
     const { product, setProduct, setTitle, setCategory } = useContext(ProductContext);
@@ -22,7 +23,7 @@ function Category({ categories }) {
         setTitle('Choose Category');
     });
     async function fetchData() {
-        const res = await fetch('https://us-central1-eeradi.cloudfunctions.net/api/products')
+        const res = await fetch(`${BASE_URL}/products`);
         setData(await res.json());
     }
 
@@ -71,7 +72,7 @@ function Category({ categories }) {
 // This function gets called at build time
 export async function getServerSideProps() {
     // Call an external API endpoint to get posts
-    const res = await fetch('https://us-central1-eeradi.cloudfunctions.net/api/products/categories')
+    const res = await fetch(`${BASE_URL}/products/categories`)
     const response = await res.json()
 
     // By returning { props: posts }, the Blog component

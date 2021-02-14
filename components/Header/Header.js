@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 // nodejs library that concatenates classes
 import classNames from "classnames";
@@ -17,6 +17,7 @@ import Menu from "@material-ui/icons/Menu";
 // core components
 import styles from "assets/jss/nextjs-material-kit/components/headerStyle.js";
 import { ProductContext } from "../../product-context";
+import { BASE_URL } from "helper";
 
 
 const useStyles = makeStyles(styles);
@@ -37,13 +38,13 @@ export default function Header(props) {
   });
   React.useEffect(() => {
     (async function fetchData() {
-      if(setCategories) {
+      if (setCategories) {
         console.log("kbt: fetchData -> setCategories", setCategories);
-        let categoriesResponse = await fetch('https://us-central1-eeradi.cloudfunctions.net/api/products/categories');
+        let categoriesResponse = await fetch(`${BASE_URL}/products/categories`);
         let categories = await categoriesResponse.json();
         console.log("kbt: Header -> useEffect", categories);
-        if(categories.data)
-        setCategories(categories.data);
+        if (categories.data)
+          setCategories(categories.data);
         setChildCategories(prepareChildCategories(categories.data));
       }
     })();
@@ -79,7 +80,7 @@ export default function Header(props) {
         .classList.remove(classes[changeColorOnScroll.color]);
     }
   };
-  const { color, rightLinks:RightLinks, leftLinks, brand, fixed, absolute } = props;
+  const { color, rightLinks: RightLinks, leftLinks, brand, fixed, absolute } = props;
   const appBarClasses = classNames({
     [classes.appBar]: true,
     [classes[color]]: color,
@@ -101,8 +102,8 @@ export default function Header(props) {
               {leftLinks}
             </Hidden>
           ) : (
-            brandComponent
-          )}
+              brandComponent
+            )}
         </div>
         <Hidden smDown implementation="css">
           <RightLinks handleDrawerToggle={handleDrawerToggle} />
@@ -127,7 +128,7 @@ export default function Header(props) {
           }}
           onClose={handleDrawerToggle}
         >
-          <div className={classes.appResponsive} style={{color: 'white !important'}}>
+          <div className={classes.appResponsive} style={{ color: 'white !important' }}>
             {leftLinks}
             <RightLinks handleDrawerToggle={handleDrawerToggle} categories={props.categories} />
           </div>

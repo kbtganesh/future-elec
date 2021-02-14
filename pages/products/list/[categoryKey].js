@@ -5,6 +5,7 @@ import { ProductContext } from "../../../product-context";
 import "./list.scss";
 import Snackbar from '@material-ui/core/Snackbar';
 import Button from "components/CustomButtons/Button.js";
+import { BASE_URL } from '../../../helper';
 const base = {
     local: 'http://localhost:5001/eeradi/us-central1',
     firebase: 'https://us-central1-eeradi.cloudfunctions.net',
@@ -88,7 +89,10 @@ function List({ response, params, query }) {
         let lastitem = data.length ? data[data.length - 1] : '';
         let child = query.child && query.child !== 'all' ? query.child : '';
         let trackId = lastitem && lastitem.id || '';
-        let url = `${DOMAIN}/api/products/category/${params.categoryKey}` +
+
+        // let url = `${DOMAIN}/api/products/category/${params.categoryKey}` +
+        //     `?child=${child}&trackId=${trackId}`;
+        let url = `${BASE_URL}/products/category/${params.categoryKey}` +
             `?child=${child}&trackId=${trackId}`;
         showLoader();
         try {
@@ -125,7 +129,7 @@ function List({ response, params, query }) {
                     </div>)
                 )}
             </div>}
-            {!!errorMessage && <h1 style={{ textAlign: 'center' }}>
+            {!!errorMessage && <h1 style={{ textAlign: 'center', marginTop: '20px' }}>
                 {errorMessage}
             </h1>}
             {data && <div className="product-card-container">
@@ -177,8 +181,11 @@ export async function getServerSideProps({ params, query }) {
     let response = {};
     try {
         console.log("***********")
-        console.log("URL", `${DOMAIN}/api/products/category/` + categoryKey + queryParam);
-        const res = await fetch(`${DOMAIN}/api/products/category/` + categoryKey + queryParam)
+        // let url = "http://futureelectronicsapi-env.eba-npj4qpra.ap-south-1.elasticbeanstalk.com";
+        let url = "http://localhost:1337";
+        let oldurl = `${DOMAIN}/api`;
+        console.log("URL", `${url}/products/category/` + categoryKey + queryParam);
+        const res = await fetch(`${url}/products/category/` + categoryKey + queryParam)
         response = await res.json();
     } catch (e) {
         response.errorMessage = e.errorMessage || 'Unknown Error Occured';

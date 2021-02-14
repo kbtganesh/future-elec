@@ -14,6 +14,7 @@ import classNames from "classnames";
 import "./details.scss";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Snackbar from '@material-ui/core/Snackbar';
+import { BASE_URL } from '../../../helper';
 const sampleImage = [
     "https://www.freeiconspng.com/uploads/square-png-31.png",
     "https://homepages.cae.wisc.edu/~ece533/images/arctichare.png",
@@ -109,7 +110,7 @@ function Product({ product: productRes, query }) {
                 <div className="product-details">
                     <div className="title">{product.title}</div>
                     <div className="brand">{product.brand}</div>
-                    <div className="description">{product.description}</div>
+                    <div className="description" dangerouslySetInnerHTML={{__html: product.description}}></div>
                     <div className="price">
                         <div className="actual-price">₹ {product.price}</div>
                         {!!product.strikePrice && <div className="strike-price">₹ {product.strikePrice}</div>}
@@ -120,10 +121,10 @@ function Product({ product: productRes, query }) {
                         }
                     </div>
                     {product.shippingPrice && <div className="shippingPrice">
-                        <span className="title">Delivery</span>
                         <div className="price">
-                            ₹ {product.shippingPrice}
+                            + ₹ {product.shippingPrice}
                         </div>
+                        <span className="title"> shipping charges</span>
                     </div>}
                     <div className="buy-action">
                         <a id="whatsapp-link" target="_blank" href={`https://api.whatsapp.com/send?phone=919566992686&text=Hi, I want to buy ${product.title} - ${product.id}`}>
@@ -212,9 +213,11 @@ export async function getServerSideProps(arg) {
     // Call an external API endpoint to get posts
     let product = {};
     try {
-        const res = await fetch(`https://us-central1-eeradi.cloudfunctions.net/api/products/detail/${params.productId}`)
+        // const res = await fetch(`https://us-central1-eeradi.cloudfunctions.net/api/products/detail/${params.productId}`)
+        const res = await fetch(`${BASE_URL}/products/${params.productId}`)
         product = await res.json()
     } catch (error) {
+        console.log("kbt ~ file: [productId].js ~ line 226 ~ getServerSideProps ~ error", error);
         product.errorMessage = error && error.errorMessage || 'Unknown Error Occured';
     }
 
