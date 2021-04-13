@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import Router, { withRouter } from 'next/router'
 import Link from "next/link";
 // nodejs library that concatenates classes
 import classNames from "classnames";
@@ -12,20 +13,35 @@ import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
+import TextField from '@material-ui/core/TextField';
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
+import SearchIcon from '@material-ui/icons/Search';
 // core components
 import styles from "assets/jss/nextjs-material-kit/components/headerStyle.js";
 import { ProductContext } from "../../product-context";
 import { BASE_URL } from "helper";
-
+import InputAdornment from "@material-ui/core/InputAdornment";
+import StorefrontIcon from '@material-ui/icons/Storefront';
 
 const useStyles = makeStyles(styles);
-
-export default function Header(props) {
+const useStyles1 = makeStyles((theme) => ({
+  root: {
+    '& .MuiFormLabel-root, & .MuiButton-root, & .MuiInputBase-input': {
+      color: 'white',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottom: '2px solid white',
+    },
+  },
+}));
+function Header(props) {
   const { setCategories, setChildCategories } = useContext(ProductContext);
   const classes = useStyles();
+  const classes1 = useStyles1();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [searchKey, setSearchKey] = React.useState('');
+  const [searchBox, setSearchBox] = React.useState(false);
   React.useEffect(() => {
     if (props.changeColorOnScroll) {
       window.addEventListener("scroll", headerColorChange);
@@ -88,10 +104,17 @@ export default function Header(props) {
     [classes.fixed]: fixed
   });
   const brandComponent = (
-    <Link href="/components" as="/components">
+    <Link href="/" as="/">
       <Button className={classes.title}>{brand}</Button>
     </Link>
   );
+  function search() {
+    Router.push(`/products/search/[searchKey]`, `/products/search/${searchKey}`);
+  }
+
+  function toggleSearchBox() {
+    setSearchBox(s => !s);
+  }
   return (
     <AppBar className={appBarClasses}>
       <Toolbar className={classes.container}>
@@ -102,9 +125,32 @@ export default function Header(props) {
               {leftLinks}
             </Hidden>
           ) : (
-              brandComponent
+              <>
+                <Hidden smDown implementation="css">
+                  {brandComponent}
+                </Hidden>
+                <Hidden mdUp>
+                  <StorefrontIcon />
+                </Hidden>
+              </>
             )}
         </div>
+        {!searchBox && <div className={classes1.root}> <Button
+          color="white"
+          className={classes.navLink}
+          onClick={() => toggleSearchBox()}
+        >
+          <i className={classes.socialIcons + " fas fa-search"} />
+        </Button></div>}
+        {searchBox && <div className={classes1.root}>
+          <TextField  placeholder="Search" value={searchKey} onChange={(e) => setSearchKey(e.target.value)}
+            onKeyPress={event => event.key === 'Enter' && search()} 
+            endAdornment={
+              <InputAdornment position="end">
+                  <SearchIcon />
+              </InputAdornment>
+            }/>
+        </div>}
         <Hidden smDown implementation="css">
           <RightLinks handleDrawerToggle={handleDrawerToggle} />
         </Hidden>
@@ -180,3 +226,5 @@ Header.propTypes = {
     ]).isRequired
   })
 };
+
+export default withRouter(Header);

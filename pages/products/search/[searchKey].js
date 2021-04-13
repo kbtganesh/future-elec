@@ -2,7 +2,7 @@ import fetch from 'node-fetch'
 import React, { useState, useEffect, useContext } from 'react';
 import Router, { withRouter } from 'next/router'
 import { ProductContext } from "../../../product-context";
-import "./list.scss";
+import "./search.scss";
 import Snackbar from '@material-ui/core/Snackbar';
 import Button from "components/CustomButtons/Button.js";
 import { BASE_URL } from '../../../helper';
@@ -15,22 +15,20 @@ function List({ response, params, query }) {
     console.log("kbt: List -> query", query);
     console.log("kbt: List -> params", params);
     let { success, data: responseData, errorMessage } = response || {};
-    let { categoryKey } = params;
-    console.log("kbt: List -> categoryKey", categoryKey);
+    let { searchKey } = params;
+    console.log("kbt: List -> searchKey", searchKey);
     const { product, setProduct, category, setTitle, childCategories } = useContext(ProductContext);
-    console.log("kbt: List -> childCategories", childCategories);
     // actual data to be rendered
     const [data, setData] = useState(responseData);
     const [message, setMessage] = useState(0);
     const [loadMoreBtn, setLoadMoreBtn] = useState(true);
-    console.log("kbt: List -> childCategories[categoryKey]", childCategories[categoryKey]);
     const [child, setChild] = useState(query && query.child || '');
     const [scroll, setScroll] = useState({ x: 0, y: 0 });
     console.log("kbt: List -> child", child);
 
     useEffect(() => {
         setTitle(category.label);
-        console.log("kbt ~ file: [categoryKey].js ~ line 102 ~ useEffect ~ setTitle", setTitle);
+        console.log("kbt ~ file: [searchKey].js ~ line 102 ~ useEffect ~ setTitle", setTitle);
     }, []);
 
     useEffect(() => {
@@ -38,13 +36,13 @@ function List({ response, params, query }) {
         setChild(query && query.child || '');
         setLoadMoreBtn(true);
         setData(responseData);
-        console.log("kbt ~ file: [categoryKey].js ~ line 36 ~ useEffect ~ query");
+        console.log("kbt ~ file: [searchKey].js ~ line 36 ~ useEffect ~ query");
     }, [query]);
 
     useEffect(() => {
         scrollTo(scroll.x, scroll.y);
         setLoadMoreBtn(true);
-        console.log("kbt ~ file: [categoryKey].js ~ line 46 ~ useEffect ~ data");
+        console.log("kbt ~ file: [searchKey].js ~ line 46 ~ useEffect ~ data");
     }, [data])
     // async function fetchData() {
     //     const res = await fetch('https://us-central1-eeradi.cloudfunctions.net/api/products')
@@ -85,7 +83,7 @@ function List({ response, params, query }) {
         setChild(child);
         showLoader();
         setData([]);
-        Router.push(`/products/list/[categoryKey]?child=${child}`, `/products/list/${categoryKey}?child=${child}`)
+        Router.push(`/products/list/[searchKey]?child=${child}`, `/products/list/${searchKey}?child=${child}`)
             .then(_ => window.scrollTo(0, 0));
     }
 
@@ -94,11 +92,11 @@ function List({ response, params, query }) {
         let child = query.child && query.child !== 'all' ? query.child : '';
         let trackId = lastitem && lastitem.id || '';
 
-        // let url = `${DOMAIN}/api/products/category/${params.categoryKey}` +
+        // let url = `${DOMAIN}/api/products/search/${params.searchKey}` +
         //     `?child=${child}&trackId=${trackId}`;
-        let url = `${BASE_URL}/products/category/${params.categoryKey}` +
+        let url = `${BASE_URL}/products/search/${params.searchKey}` +
             `?child=${child}&skip=${data.length}`;
-        console.log("kbt ~ file: [categoryKey].js ~ line 97 ~ loadMoreProducts ~ data.length", data.length);
+        console.log("kbt ~ file: [searchKey].js ~ line 97 ~ loadMoreProducts ~ data.length", data.length);
         showLoader();
         try {
             let rawres = await fetch(url);
@@ -121,23 +119,27 @@ function List({ response, params, query }) {
         setMessage('');
     }
 
-    const childCategoryList = childCategories && childCategories[categoryKey] || [];
+    // const childCategoryList = childCategories && childCategories[searchKey] || [];
     return (
         <div className="page-container">
             <Snackbar key={message} open={!!message} autoHideDuration={4000} message={message} onClose={onCloseMessage}>
             </Snackbar>
-            {childCategoryList && childCategoryList.length > 0 && <div className="filterByChildCategory">
+            {/* {childCategoryList && childCategoryList.length > 0 && <div className="filterByChildCategory">
                 <div className={`childCategory ${child == 'all' ? 'selected' : ''}`} onClick={() => onClickChildCategory('all')}>All</div>
                 {childCategoryList.map(c => (
                     <div className={`childCategory ${child == c.key ? 'selected' : ''}`} key={c.key} onClick={() => onClickChildCategory(c.key)}>
                         {c['label']}
                     </div>)
                 )}
-            </div>}
+            </div>} */}
             {!!errorMessage && <h1 style={{ textAlign: 'center', marginTop: '20px' }}>
                 {errorMessage}
             </h1>}
+            {data && <div className="search-msg">
+                    Search Results for "{searchKey}"
+                </div>}
             {data && <div className="product-card-container">
+                
                 {data.map(d => {
                     let percentageOffer;
                     if (d.strikePrice && d.price)
@@ -178,10 +180,10 @@ function List({ response, params, query }) {
 
 export async function getServerSideProps({ params, query }) {
     console.log("kbt: getServerSideProps -> param", params);
-    let { categoryKey } = params;
+    let { searchKey } = params;
     let child = query && query.child || '';
-    let queryParam = child && child != 'all' ? '?child=' + child : '';
-    console.log("kbt:fromIndexfromindex getServerSideProps -> categoryKey", categoryKey);
+    let queryParam = '';
+    console.log("kbt:fromIndexfromindex getServerSideProps -> searchKey", searchKey);
     // Call an external API endpoint to get posts
     let response = {};
     try {
@@ -189,8 +191,8 @@ export async function getServerSideProps({ params, query }) {
         // let url = "http://futureelectronicsapi-env.eba-npj4qpra.ap-south-1.elasticbeanstalk.com";
         let url = BASE_URL;
         let oldurl = `${DOMAIN}/api`;
-        console.log("URL", `${url}/products/category/` + categoryKey + queryParam);
-        const res = await fetch(`${url}/products/category/` + categoryKey + queryParam)
+        console.log("URL", `${url}/products/search/` + searchKey + queryParam);
+        const res = await fetch(`${url}/products/search/` + searchKey + queryParam)
         response = await res.json();
     } catch (e) {
         response.errorMessage = e.errorMessage || 'Unknown Error Occured';

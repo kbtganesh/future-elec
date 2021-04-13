@@ -93,6 +93,7 @@ export default function HeaderLinks({ handleDrawerToggle }) {
             aria-controls="customized-menu"
             aria-haspopup="true"
             onClick={handleClick}
+            onMouseOver={handleClick}
           >
             Products
           </div>
